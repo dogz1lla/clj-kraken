@@ -25,7 +25,7 @@
 ;                          "OpenPositions" "Ledgers" "QueryLedgers" 
 ;                          "TradeVolume"})
 
-(def public-endpoints #{"Time" "SystemStatus"})
+(def public-endpoints #{"Time" "SystemStatus" "OHLC" "Assets"})
 (def private-endpoints #{"Balance"})
 
 (defn valid-endpoint? [endpoint]
@@ -53,6 +53,10 @@
     false
     true))
 
+(defn get-request-payload
+  [params-list]
+  (if (seq params-list) (auth/urlencode params-list) ""))
+
 ;; 4. [X] need to change this function to return a list of strings x=y instead
 ;; 5. [X] need to a add a checker that all the elements in the options list are of
 ;;    the kind "x=y"
@@ -67,18 +71,22 @@
 (defn parse-response-body [response] 
   (json/read-str (:body response)))
 
-;; 6. [ ] here can perhaps coerce both methods into one post (need to check 
+;; 6. [X] here can perhaps coerce both methods into one post (need to check 
 ;;    with get and options)
-;; TODO actually all of the endpoints except public ones are post;
+;; DONE actually all of the endpoints except public ones are post;
 ;;      all public endpoints are GET; need to check public endpoint that 
 ;;      requires params eg /OHLC
-(defn kraken-request [endpoint params]
-  (let [uri (str private-uri-prefix endpoint)
-        address (str url uri)
-        payload (make-request-params uri params)]
-    (if (public-endpoints endpoint)
-      (client/get address payload)
-      (client/post address payload))))
+(defn kraken-request [endpoint params-list]
+  (if (public-endpoints endpoint)
+      (let [uri (str public-uri-prefix endpoint)
+            address (str url uri)
+            params (get-request-payload params-list)]
+        (client/get (str address "?" params)))
+      (let [uri (str private-uri-prefix endpoint)
+            address (str url uri)
+            params (post-request-payload params-list)
+            payload (make-request-params uri params)]
+        (client/post address payload))))
 
 ; (defn kraken-get [uri]
 ;   (client/get (str url uri) (make-request-params uri {})))
@@ -104,6 +112,8 @@
   ; (open-orders)
   ; (closed-orders)
   (kraken-api-request "Time" '())
+  (kraken-api-request "OHLC" '("pair=XBTUSD"))
+  (kraken-api-request "Assets" '())
   (kraken-api-request "TradeBalance" '())
   (kraken-api-request "Balance" '())
   (kraken-api-request "WrongEndpoint" '())
