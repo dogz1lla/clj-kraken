@@ -6,10 +6,6 @@
         http-kit/http-kit     {:mvn/version "2.5.3"}}
  :aliases
  {:run-m {:main-opts ["-m" "kraken-api.clj-kraken"]}
-  :run-x {:ns-default kraken-api.clj-kraken
-          ;:exec-fn greet
-          ;:exec-args {:name "Clojure"}
-          }
   :build {:deps {io.github.seancorfield/build-clj
                  {:git/tag "v0.4.0" :git/sha "54e39ae"}}
           :ns-default build}
