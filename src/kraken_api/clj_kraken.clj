@@ -6,6 +6,7 @@
 ;; TODO
 ;; [ ] write tests
 ;; [ ] try building uberjar; test its usage; add docs to readme
+;; [ ] ask ppl about better way of detecting nils in a list
 
 (defn release-kraken [endpoint endpoint-args]
   (print (req/kraken-api-request endpoint endpoint-args)))
