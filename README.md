@@ -51,4 +51,4 @@ Any private endpoints besides `Balance` are untested!
 
 Copyright © 2021 dogz1lla
 
-Distributed under the Eclipse Public License version 1.0.
+Distributed under the GNU GENERAL PUBLIC LICENSE Version 3.
