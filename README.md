@@ -4,11 +4,11 @@ FIXME: my new application.
 
 ## Installation
 
-Download from https://github.com/kraken-api/clj-kraken
+Clone this repo to a local directory.
 
 ## Usage
 
-FIXME: explanation
+This is a simple interface to the kraken [https://docs.kraken.com/rest/](crypto exchange API)
 
 Run the project directly, via `:exec-fn`:
 
