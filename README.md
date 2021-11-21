@@ -8,7 +8,7 @@ Clone this repo to a local directory.
 
 ## Usage
 
-This is a simple interface to the kraken [https://docs.kraken.com/rest/](crypto exchange API)
+This is a simple interface to the kraken [crypto exchange API](https://docs.kraken.com/rest/)
 
 Run the project directly, via `:exec-fn`:
 
