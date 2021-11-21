@@ -8,21 +8,29 @@
 (def cli-options
   [["-h" "--help" "Print this documentation string."]])
 
+(def implemented-endpoints
+  (str "#{" 
+       (string/join ", " (s/union req/public-endpoints 
+                          req/private-endpoints)) 
+       "}"))
+
 (defn usage [options-summary]
   (->> ["CLI utility for accessing Kraken crypto exchange API."
         ""
-        "Usage: program-name [options] endpoint [endpoint-args]"
+        "Usage: clj -M -m kraken-api.clj-kraken [options] endpoint [endpoint-args]"
         ""
         "Options:"
         options-summary
         ""
-        "Currently implemented endpoints: "
-        (str "[" (string/join ", " (s/union req/public-endpoints 
-                                            req/private-endpoints)) "]")
+        "Endpoints:"
+        implemented-endpoints
+        ""
+        "Endpoint args:"
+        "All endpoint args need to follow x=y pattern."
+        "Please refer to https://docs.kraken.com/rest/ for the full list."
         ""
         "Please do not forget to set KRAKEN_API_KEY and KRAKEN_API_SEC vars!"
-        ""
-        "Please refer to https://docs.kraken.com/rest/ for further details."]
+        ""]
        (string/join \newline)))
 
 (defn error-msg [errors]
@@ -40,10 +48,13 @@
       {:exit-message (usage summary) :ok? true}
       errors ; errors => exit with description of errors
       {:exit-message (error-msg errors)}
+      ;; check if all of the params are in the correct format
+      (not (req/valid-params? (rest arguments)))
+      {:exit-message "Error: params should be of the form param=value."}
       ;; custom validation on arguments
       (and (<= 1 (count arguments))
            (req/valid-endpoint? (first arguments)))
-      {:endpoint (first arguments) :options (rest arguments)}
+      {:endpoint (first arguments) :endpoint-args (rest arguments)}
       :else ; failed custom validation => exit with usage summary
       {:exit-message (usage summary)})))
 

@@ -6,10 +6,6 @@
            java.util.Base64))
 
 
-(defn key-value-str
-  [[k v]]
-  (str k "=" v))
-
 (defn encode-slash
   [s]
   (s/replace s #"/" "%2F"))
@@ -17,10 +13,6 @@
 (defn encode-space
   [s]
   (s/replace s #" " "+"))
-
-(defn map-str
-  [m]
-  (map key-value-str m))
 
 (defn urlencode
   "
@@ -34,13 +26,19 @@
        (encode-slash)))
 
 (defn aug-postdata
+  "
+  Add nonce value to the head of the urlencoded string.
+  "
   [params-list]
   (let [nonce (second (s/split (first params-list) #"="))
         urlencoded (urlencode params-list)]
     (str nonce urlencoded)))
 
 (defn add-bytes
-  ;; see https://stackoverflow.com/a/26791567/3561086
+  "
+  Return a concatenation of two byte arrays.
+  See https://stackoverflow.com/a/26791567/3561086
+  "
   [b1 b2]
   (with-open [os (java.io.ByteArrayOutputStream.)]
     (.write os b1)

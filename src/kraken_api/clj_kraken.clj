@@ -11,14 +11,11 @@
   []
   (and api-key api-sec))
 
-;; TODO: implement validation for options (should be in the format x=y)
-;; TODO: pass the options correctly to kraken-api-request
-
-(defn release-kraken [endpoint options]
-  (print (req/kraken-api-request endpoint options)))
+(defn release-kraken [endpoint endpoint-args]
+  (print (req/kraken-api-request endpoint endpoint-args)))
 
 (defn -main [& args]
-  (let [{:keys [endpoint options exit-message ok?]} (cli/validate-args args)]
+  (let [{:keys [endpoint endpoint-args exit-message ok?]} (cli/validate-args args)]
     (if exit-message
       (cli/exit (if ok? 0 1) exit-message)
-      (release-kraken endpoint options))))
+      (release-kraken endpoint endpoint-args))))
