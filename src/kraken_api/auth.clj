@@ -22,15 +22,14 @@
   [m]
   (map key-value-str m))
 
-;; TODO rewrite such that query is a list of strings of type "x=y"
+;; DONE rewrite such that query is a list of strings of type "x=y"
 (defn urlencode
   "
   This func is supposed to do what urllib.parse.urlencode does in python.
-  ``query`` is a map.
+  ``query`` is a list of strings of kind x=y.
   "
-  [query]
-  (->> query
-       (map-str)
+  [params-list]
+  (->> params-list
        (s/join "&")
        (encode-space)
        (encode-slash)))
@@ -91,5 +90,5 @@
          (bytes-to-str))))
 
 (comment 
-  (urlencode {"hi" 1 "bye" 2})
+  (urlencode  '("hi=1" "bye=2"))
   )
