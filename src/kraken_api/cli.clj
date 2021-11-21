@@ -5,6 +5,13 @@
             [kraken-api.requests :as req]))
 
 
+(def api-key (System/getenv "KRAKEN_API_KEY"))
+(def api-sec (System/getenv "KRAKEN_API_SEC"))
+
+(defn api-keys-loaded?
+  []
+  (and api-key api-sec))
+
 (def cli-options
   [["-h" "--help" "Print this documentation string."]])
 
@@ -46,6 +53,9 @@
     (cond
       (:help options) ; help => exit OK with usage summary
       {:exit-message (usage summary) :ok? true}
+      ;; check if all of the params are in the correct format
+      (not (api-keys-loaded?))
+      {:exit-message "Error: at least one of KRAKEN_API_KEY, KRAKEN_API_SEC not set."}
       errors ; errors => exit with description of errors
       {:exit-message (error-msg errors)}
       ;; check if all of the params are in the correct format
