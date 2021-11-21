@@ -5,13 +5,6 @@
             [kraken-api.auth :as auth]))
 
 
-;; [X] Extract API key and secret
-;; [X] Extract endpoint name and params
-;; [X] Create a url encoded payload out of params
-;; [X] Make a get/post request based on the endpoint name
-;; [X] Parse request response
-;; [X] Rewrite the requests logic using strings of params of the kind x=y
-
 (def url "https://api.kraken.com")
 (def public-uri-prefix "/0/public/")
 (def private-uri-prefix "/0/private/")

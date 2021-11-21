@@ -1,7 +1,7 @@
 # clj-kraken
 
 This is a simple CLI utility to access the 
-[kraken crypto exchange API](https://docs.kraken.com/rest/)
+[kraken crypto exchange API](https://docs.kraken.com/rest/).
 
 ## Installation
 

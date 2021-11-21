@@ -3,13 +3,9 @@
             [kraken-api.requests :as req])
   (:gen-class))
 
-
-(def api-key (System/getenv "KRAKEN_API_KEY"))
-(def api-sec (System/getenv "KRAKEN_API_SEC"))
-
-(defn api-keys-loaded?
-  []
-  (and api-key api-sec))
+;; TODO
+;; [ ] write tests
+;; [ ] try building uberjar; test its usage; add docs to readme
 
 (defn release-kraken [endpoint endpoint-args]
   (print (req/kraken-api-request endpoint endpoint-args)))
