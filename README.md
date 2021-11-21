@@ -1,15 +1,13 @@
 # clj-kraken
 
-FIXME: my new application.
+This is a simple CLI utility to access the 
+[kraken crypto exchange API](https://docs.kraken.com/rest/)
 
 ## Installation
 
 Clone this repo to a local directory.
 
 ## Usage
-
-This is a simple CLI utility to access the 
-[kraken crypto exchange API](https://docs.kraken.com/rest/)
 
 Run the utility using the clojure CLI:
 
