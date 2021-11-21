@@ -34,9 +34,9 @@
        (encode-slash)))
 
 (defn aug-postdata
-  [query]
-  (let [urlencoded (urlencode query)
-        nonce (get query "nonce")]
+  [params-list]
+  (let [nonce (second (s/split (first params-list) #"="))
+        urlencoded (urlencode params-list)]
     (str nonce urlencoded)))
 
 (defn add-bytes
@@ -90,4 +90,5 @@
 
 (comment 
   (urlencode  '("hi=1" "bye=2"))
+  (aug-postdata '("nonce=123" "hi=1" "bye=2"))
   )
