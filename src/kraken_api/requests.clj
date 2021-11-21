@@ -48,43 +48,52 @@
    :content-type :x-www-form-urlencoded
    :content-type-params {:charset "UTF-8"}})
 
-;; 4. need to change this function to return a list of strings x=y instead
-;; 5. need to a add a checker that all the elements in the options list are of
+(defn params-valid? [params-list]
+  (if (some nil? (map (fn [s] (re-matches #"[a-z,A-Z]+=.+" s)) params-list))
+    false
+    true))
+
+;; 4. [X] need to change this function to return a list of strings x=y instead
+;; 5. [X] need to a add a checker that all the elements in the options list are of
 ;;    the kind "x=y"
+;; TODO change the name of the function
 (defn post-request-payload
-  [& params]
-  (if params
-    (assoc params "nonce" (get-nonce))
-    {"nonce" (get-nonce)}))
+  [params-list]
+  (let [nonce (str "nonce=" (get-nonce))] 
+    (if (seq params-list)
+      (conj params-list nonce)
+      (list nonce))))
 
 (defn parse-response-body [response] 
   (json/read-str (:body response)))
 
-;; 6. here can perhaps coerce both methods into one post (need to check with get and 
-;;    options)
+;; 6. [ ] here can perhaps coerce both methods into one post (need to check 
+;;    with get and options)
 ;; TODO actually all of the endpoints except public ones are post;
 ;;      all public endpoints are GET; need to check public endpoint that 
 ;;      requires params eg /OHLC
-(defn kraken-get [uri]
-  (client/get (str url uri) (make-request-params uri {})))
+(defn kraken-request [endpoint params]
+  (let [uri (str private-uri-prefix endpoint)
+        address (str url uri)
+        payload (make-request-params uri params)]
+    (if (public-endpoints endpoint)
+      (client/get address payload)
+      (client/post address payload))))
 
-(defn kraken-post [uri payload]
-  (client/post (str url uri) (make-request-params uri payload)))
+; (defn kraken-get [uri]
+;   (client/get (str url uri) (make-request-params uri {})))
 
-;; 1. external call to this func
-;; 2. should make params NOT an optional, what is passed is a list of strings 
+; (defn kraken-post [uri payload]
+;   (client/post (str url uri) (make-request-params uri payload)))
+
+;; 1. [ ] external call to this func
+;; 2. [X] should make params NOT an optional, what is passed is a list of strings 
 ;;    (possibly empty)
-;; 3. params is then passed to post-request-payload
+;; 3. [X] params is then passed to post-request-payload
 (defn kraken-api-request 
-  [endpoint & params]
-  (parse-response-body 
-    (cond 
-      (public-endpoints endpoint) (kraken-get (str public-uri-prefix endpoint))
-      (private-endpoints endpoint) 
-      (let [uri (str private-uri-prefix endpoint)
-            payload (if params (post-request-payload params) (post-request-payload))] 
-        (kraken-post uri payload))
-      :else  {:body (json/write-str {"error" ["Unknown endpoint!"]})})))
+  "endpoint is a string, params is a list of strings"
+  [endpoint params]
+  (parse-response-body (kraken-request endpoint params)))
 
 (comment
   ; (server-time)
@@ -94,9 +103,12 @@
   ; (trade-balance "XXMR")
   ; (open-orders)
   ; (closed-orders)
-  (kraken-api-request "Time")
-  (kraken-api-request "TradeBalance")
-  (kraken-api-request "Balance")
-  (kraken-api-request "WrongEndpoint")
+  (kraken-api-request "Time" '())
+  (kraken-api-request "TradeBalance" '())
+  (kraken-api-request "Balance" '())
+  (kraken-api-request "WrongEndpoint" '())
+  (post-request-payload '("hi=bye"))
+  (params-valid? '("H1=bye"))
+  (params-valid? '("Hi=bye"))
   )
 
