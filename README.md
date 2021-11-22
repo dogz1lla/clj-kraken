@@ -19,11 +19,11 @@ possible parameters and options.
 
     $clj -M -m kraken-api.clj-kraken -h
 
-Run the project's tests (they'll fail until you edit them):
+Run the project's tests:
 
     $ clojure -T:build test
 
-Run the project's CI pipeline and build an uberjar (this will fail until you edit the tests to pass):
+Run the project's CI pipeline and build an uberjar:
 
     $ clojure -T:build ci
 
