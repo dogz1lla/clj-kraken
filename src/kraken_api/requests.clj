@@ -57,7 +57,10 @@
         (client/post address payload))))
 
 (defn parse-response-body [response] 
-  (json/read-str (:body response)))
+  (let [body (:body response)]
+    (if body
+      (json/read-str body)
+      {"error" ["Request failed: response doesnt contain :body key"]})))
 
 (defn kraken-api-request 
   "endpoint is a string, params is a list of strings"
@@ -74,5 +77,6 @@
   (POST-request-payload '("hi=bye"))
   (valid-params? '("H1=bye"))
   (valid-params? '("Hi=bye"))
+  (valid-endpoint? "Time")
   )
 

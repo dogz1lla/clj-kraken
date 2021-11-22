@@ -88,5 +88,7 @@
 
 (comment 
   (urlencode  '("hi=1" "bye=2"))
+  (urlencode  '())
+  (aug-postdata  '())
   (aug-postdata '("nonce=123" "hi=1" "bye=2"))
   )
