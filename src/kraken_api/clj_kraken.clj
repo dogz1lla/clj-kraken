@@ -4,7 +4,7 @@
   (:gen-class))
 
 ;; TODO
-;; [ ] write tests
+;; [X] write tests
 ;; [X] try running tests
 ;; [ ] try building uberjar; test its usage; add docs to readme
 ;; [ ] ask ppl about better way of detecting nils in a list
