@@ -18,10 +18,13 @@
 (defn valid-endpoint? [endpoint]
   (or (public-endpoints endpoint) (private-endpoints endpoint)))
 
-(defn valid-params? [params-list]
-  (if (some nil? (map (fn [s] (re-matches #"[a-z,A-Z]+=.+" s)) params-list))
-    false
-    true))
+(defn valid-params? 
+  "
+  Check if the params-list contains only strings of pattern x=y.
+  Credits to u/p-himik from clojure subreddit for the more elegant solution.
+  "
+  [params-list]
+  (every? #(re-matches #"[a-z,A-Z]+=.+" %) params-list))
 
 (defn make-headers [api-key uri payload api-sec]
   {"API-Key" api-key
