@@ -32,8 +32,8 @@
 
 (defn make-request-params [uri payload]
   {:body (auth/urlencode payload) 
-   :headers (make-headers api-key uri payload api-sec)
    :content-type :x-www-form-urlencoded
+   :headers (make-headers api-key uri payload api-sec)
    :content-type-params {:charset "UTF-8"}})
 
 (defn GET-request-payload
