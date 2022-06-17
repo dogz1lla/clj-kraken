@@ -47,7 +47,7 @@ Any private endpoints besides `Balance` are untested!
 
 ### Appendix
 
-Have a look at the [little article](https://https://dogz1lla.xyz/kraken_api_client) i wrote about this repo!
+Have a look at the [little article](https://dogz1lla.xyz/kraken_api_client) i wrote about this repo!
 
 ## License
 
