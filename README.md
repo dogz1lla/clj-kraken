@@ -45,6 +45,10 @@ If you remove `version` from `build.clj`, the uberjar will become `target/clj-kr
 
 Any private endpoints besides `Balance` are untested!
 
+### Appendix
+
+Have a look at the [little article](https://https://dogz1lla.xyz/kraken_api_client) i wrote about this repo!
+
 ## License
 
 Copyright © 2021 dogz1lla
